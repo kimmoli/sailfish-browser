@@ -27,6 +27,7 @@
 #include <QOpenGLFunctions_ES2>
 #include <QGuiApplication>
 #include <qmozwindow.h>
+#include <QClipboard>
 
 #include <qpa/qplatformnativeinterface.h>
 
@@ -690,7 +691,22 @@ void DeclarativeWebContainer::inputMethodEvent(QInputMethodEvent *event)
 void DeclarativeWebContainer::keyPressEvent(QKeyEvent *event)
 {
     if (m_webPage && m_enabled) {
-        m_webPage->keyPressEvent(event);
+        /* In case of Ctrl-V, change send clipboard contents as inputMethodEvent */
+        if ((event->modifiers() & Qt::ControlModifier) && (event->key() == Qt::Key_V)) {
+
+            QClipboard *cb = QGuiApplication::clipboard();
+
+            if (cb->text().length() > 0)
+            {
+                QList<QInputMethodEvent::Attribute> attributes;
+                QInputMethodEvent  ev(QLatin1String(""), attributes);
+                ev.setCommitString(cb->text());
+                m_webPage->inputMethodEvent(&ev);
+            }
+
+        } else {
+            m_webPage->keyPressEvent(event);
+        }
     }
 }
 
