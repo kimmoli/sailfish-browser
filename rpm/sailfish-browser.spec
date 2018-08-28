@@ -78,19 +78,6 @@ Group:     Applications/Internet
 %description ts-devel
 Translation source for Sailfish Browser
 
-%package tests
-Summary: Tests for Sailfish browser
-License:   MPLv2
-Group: Applications/Internet
-BuildRequires:  pkgconfig(Qt5Test)
-Requires:   %{name} = %{version}-%{release}
-Requires:   qt5-qtdeclarative-devel-tools
-Requires:   qt5-qtdeclarative-import-qttest
-Requires:   mce-tools
-
-%description tests
-Unit tests and additional data needed for functional tests
-
 %prep
 %setup -q -n %{name}-%{version}
 
@@ -138,7 +125,3 @@ fi
 %{_datadir}/translations/source/sailfish-browser.ts
 %{_datadir}/translations/source/settings-sailfish-browser.ts
 
-%files tests
-%defattr(-,root,root,-)
-%{_datadir}/applications/test-sailfish-browser.desktop
-/opt/*

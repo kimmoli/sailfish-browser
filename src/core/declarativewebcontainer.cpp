@@ -704,6 +704,11 @@ void DeclarativeWebContainer::keyPressEvent(QKeyEvent *event)
                 m_webPage->inputMethodEvent(&ev);
             }
 
+        } else if ((event->modifiers() & Qt::ControlModifier) &&(event->key() == Qt::Key_C)) {
+
+            QVariantMap data;
+            m_webPage->sendAsyncMessage("Browser:SelectionUpdate", QVariant(data));
+
         } else {
             m_webPage->keyPressEvent(event);
         }
